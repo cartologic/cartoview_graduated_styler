@@ -16,13 +16,14 @@ def index(request):
     context = {
         "v": __version__,
         "APP_NAME": APP_NAME,
-        'username': request.user
+        'username': request.user,
     }
     return render(request, "%s/index.html" % APP_NAME, context)
 
 @login_required
 def layer_styles(request, layername):
-    layer = _resolve_layer(request, layername, 'base.view_resourcebase')
+    # layer = _resolve_layer(request, layername, 'base.view_resourcebase')
+    layer = _resolve_layer(request, layername, 'layers.change_layer_style')
     styles = []
     for style in layer.styles.all():
         styles.append({
@@ -41,7 +42,7 @@ def save_style(request, layer_name, style_name):
     layer = _resolve_layer(
         request,
         layer_name,
-        'base.change_resourcebase',
+        'layers.change_layer_style',
         _PERMISSION_MSG_MODIFY)
     res = dict(success=True)
     # try:
