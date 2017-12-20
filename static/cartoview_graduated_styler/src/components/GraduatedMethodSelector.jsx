@@ -1,5 +1,9 @@
-import { ListGroup, ListGroupItem } from 'reactstrap';
-import React, { Component } from 'react';
+import { ListGroup, ListGroupItem } from 'reactstrap'
+import { NextButton, PreviousButton } from './CommonComponents'
+import React, { Component } from 'react'
+
+import classNames from 'classnames'
+
 class GraduatedMethodSelector extends Component {
     state = {
         attrs: [],
@@ -13,19 +17,8 @@ class GraduatedMethodSelector extends Component {
           <h4>{'Generate Thematic Styler'}</h4>
         </div>
         <div className="col-xs-7 col-md-8">
-          <button style={{
-            display: "inline-block",
-            margin: "0px 3px 0px 3px"
-          }} className={this.state.index == -1
-            ? "btn btn-primary btn-sm pull-right disabled"
-            : "btn btn-primary btn-sm pull-right"} onClick={() => this.props.onComplete(this.state.method, this.state.index)}>{"next >>"}</button>
-
-          <button style={{
-            display: "inline-block",
-            margin: "0px 3px 0px 3px"
-          }} className="btn btn-primary btn-sm pull-right" onClick={() => {
-            this.props.onPrevious()
-          }}>{"<< Previous"}</button>
+          <NextButton message="Next" clickAction={() => this.props.onComplete(this.state.method, this.state.index)} />
+          <PreviousButton clickAction={() => this.props.onPrevious()} />
         </div>
       </div>
         )
@@ -47,18 +40,7 @@ class GraduatedMethodSelector extends Component {
         return <div>
       {this.renderHeader()}
       <ListGroup>
-        {methods.map((m, i) => <ListGroupItem tag="a" href="#" onClick={() => this.setState({method: m.value, index: i})} style={this.state.index == i
-          ? {
-            boxShadow: "0px 0px 10px 5px steelblue",
-            marginTop: "8px",
-            marginBottom: "8px",
-            cursor: 'pointer'
-          }
-          : {
-            marginTop: "8px",
-            marginBottom: "8px",
-            cursor: 'pointer'
-          }}>
+        {methods.map((m, i) => <ListGroupItem className={classNames("list-group-item li-attribute", { "li-attribute-selected": this.state.index == i })} tag="a" href="#" onClick={() => this.setState({method: m.value, index: i})}>
           {m.label}
         </ListGroupItem>)}
       </ListGroup>

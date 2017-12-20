@@ -21,6 +21,21 @@ NextButton.propTypes = {
     disabled: PropTypes.bool.isRequired,
     message: PropTypes.string
 }
+export const Tip=(props)=> {
+    const {text}=props
+    return (
+      <div className="panel panel-info tip" >
+        <div className="panel-heading">{"Tip:"}</div>
+
+        <div className="panel-body">
+          {text}
+        </div>
+      </div>
+    )
+}
+Tip.propTypes={
+    text:PropTypes.string.isRequired
+}
 export const PreviousButton = (props) => {
     const { clickAction, disabled } = props
     return <button disabled={disabled} className={`btn btn-primary btn-sm pull-right next-button`} onClick={() => clickAction()}>

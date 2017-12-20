@@ -1,20 +1,11 @@
-import { NextButton, PreviousButton } from './CommonComponents'
+import { NextButton, PreviousButton, Tip } from './CommonComponents'
 import React, { Component } from 'react'
 
 import Rules from "./Rules.jsx"
 import Symbolizer from './Symbolizer/Symbolizer.jsx'
+
 export default class CustomStyle extends Component {
     state = {}
-    tip() {
-        return (
-            <div className="panel panel-info" style={{ margin: "15px auto 15px auto" }}>
-        <div className="panel-heading">Tip:</div>
-        <div className="panel-body">
-          Press on any of the panes to customize its styles
-        </div>
-      </div>
-        )
-    }
     renderHeader() {
         return (
             <div className="row">
@@ -47,7 +38,7 @@ export default class CustomStyle extends Component {
           </div>
 
           <div className="col-md-12">
-            {this.tip()}
+            <Tip text={"Press on any of the panes to customize its styles"} />
           </div>
         </div>
       </div>

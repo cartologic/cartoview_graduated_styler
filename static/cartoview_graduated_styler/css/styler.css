@@ -14,6 +14,9 @@ body.edit-mode {
     margin-bottom: 8px;
     cursor: pointer
 }
+.tip{
+    margin: 15px auto 15px auto
+}
 .navbar-default {
     background-color: #ffffff;
     border-color: #a0a0a0;
