@@ -49,7 +49,6 @@ class WPSClient {
             featureCollection: { features: featureType },
             literalData: { attribute }
         }
-        console.log(inputs)
         return this.execute("gs:Unique", inputs, "json").then(res => {
             try{
                 return res.json()

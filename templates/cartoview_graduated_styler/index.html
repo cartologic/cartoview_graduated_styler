@@ -37,7 +37,7 @@
     proxy: PROXY_URL,
     rest:appManagerRest,
     layersAPI: appManagerRest+"layers",
-    stylesUrl: "{% url 'cartoview_categorized_styler.index' %}styles",
+    stylesUrl: "{% url 'cartoview_graduated_styler.index' %}styles",
     {% if 'access_token' in request.session %}
         wfsURL : "{{ GEOSERVER_BASE_URL }}wfs?access_token={{request.session.access_token}}",
         wmsURL : "{{ GEOSERVER_BASE_URL }}wms?access_token={{request.session.access_token}}",
