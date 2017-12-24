@@ -30,11 +30,13 @@
   {% else %}
       const PROXY_URL=null
   {% endif %}
+  const appManagerRest="{% url 'app_manager_base_url' %}rest/app_manager/"
   const URLS = {
     geoserver: "{{ GEOSERVER_BASE_URL }}",
     geoserverRestProxy: "proxy/geoserver/rest",
     proxy: PROXY_URL,
-    layersAPI: "{% url 'api_dispatch_list' api_name='stylers-api' resource_name='layers' %}",
+    rest:appManagerRest,
+    layersAPI: appManagerRest+"layers",
     stylesUrl: "{% url 'cartoview_categorized_styler.index' %}styles",
     {% if 'access_token' in request.session %}
         wfsURL : "{{ GEOSERVER_BASE_URL }}wfs?access_token={{request.session.access_token}}",
@@ -46,7 +48,6 @@
     static: "{{ STATIC_URL }}",
     appStatic: "{{ STATIC_URL }}{{APP_NAME}}",
     media: "{{ MEDIA_URL }}",
-    rest: "{% url 'app_manager_base_url' %}rest/app_manager/",
     geonodeRest: "{% url 'api_api_top_level' 'api' %}",
     appLogo:'{% static '{{APP_NAME}}/logo.png' %}'
   };

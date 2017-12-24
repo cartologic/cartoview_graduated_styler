@@ -13,7 +13,7 @@ class NumOfClassesSelector extends Component {
     return (
       <div className="row">
         <div className="col-xs-5 col-md-4">
-          <h4>{'Generate Thematic Styler'}</h4>
+          <h4>{'Number of Classes'}</h4>
         </div>
         <div className="col-xs-7 col-md-8">
           <NextButton message="Next" clickAction={() => this.props.onComplete(this.state.numOfClasses, this.state.index)} />

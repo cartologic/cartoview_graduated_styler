@@ -14,6 +14,7 @@ class URLS {
         let params = {
             'limit': limit,
             'offset': offset,
+            'permission':"change_layer_style",
             ...query
         }
         if (userMaps) {
@@ -23,7 +24,7 @@ class URLS {
         return url
     }
     getLayersApiSearchURL = (username, userMaps = false,text) => {
-        let params = {'title__contains':text}
+        let params = {'title__contains':text,'permission':"change_layer_style"}
         if (userMaps) {
             params['owner__username'] = username
         }

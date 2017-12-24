@@ -49,6 +49,7 @@ class WPSClient {
             featureCollection: { features: featureType },
             literalData: { attribute }
         }
+        console.log(inputs)
         return this.execute("gs:Unique", inputs, "json").then(res => {
             try{
                 return res.json()
@@ -67,8 +68,7 @@ class WPSClient {
         }
         return this.execute("vec:FeatureClassStats", inputs, "xml").then(res => res.text()).then(xml => {
             const doc = new DOMParser().parseFromString(xml, 'application/xml'),
-                classes = doc.getElementsByTagName('Class'),
-                rules = [];
+                classes = doc.getElementsByTagName('Class')
             return Array.from(classes).map(c => {
                 const min = c.getAttribute('lowerBound'),
                     max = c.getAttribute('upperBound'),
