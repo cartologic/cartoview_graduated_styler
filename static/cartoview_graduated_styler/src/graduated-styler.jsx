@@ -183,7 +183,7 @@ class Styler extends Component {
                                 errorMessage: "it seems that this attribute has no values please go back and select another one"
                             } ) )
                     },
-                    filter: a => a.attribute_type.toLowerCase() != "xsd:string",
+                    filter: a => ["xsd:int", "xsd:double", "xsd:long"].indexOf(a.attribute_type.toLowerCase()) != -1,
                     tip: "Numeric attributes only are only available for this step",
                     onPrevious: () => {
                         this.setState( {

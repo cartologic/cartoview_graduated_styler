@@ -28,7 +28,7 @@ const config = {
         libraryTarget: 'umd',
         umdNamedDefine: true,
         chunkFilename: '[name]-chunk.js',
-        publicPath: "/static/cartoview_basic_viewer/"
+        publicPath: "/static/cartoview_graduated_styler/"
     },
     node: {
         fs: "empty"
