@@ -42,6 +42,20 @@ export default class AttributeSelector extends Component {
             </div>
         )
     }
+    renderLayerAttributes(attrs, isGeom, filter){
+        return (
+            <ul className="list-group">
+                {attrs.map((a, i) => isGeom(a) || !filter(a)
+                    ? null
+                    : <li className={classNames("list-group-item li-attribute", { "li-attribute-selected": this.state.selectedIndex == i })} onClick={() => {
+                        this.setState({ selectedAttribute: a.attribute, selectedIndex: i })
+                    }}>
+                        {a.attribute_label || a.attribute}
+                        ({a.attribute_type})
+                </li>)}
+            </ul>
+        )
+    }
     render() {
         const { attrs } = this.state;
         const { onComplete, filter } = this.props;
@@ -69,17 +83,7 @@ export default class AttributeSelector extends Component {
                         <PreviousButton clickAction={() => this.props.onPrevious()} />
                     </div>
                 </div>
-                {/* TODO: what if there is no attributes?! */}
-                <ul className="list-group">
-                    {attrs.map((a, i) => isGeom(a) || !filter(a)
-                        ? null
-                        : <li className={classNames("list-group-item li-attribute", { "li-attribute-selected": this.state.selectedIndex == i })} onClick={() => {
-                            this.setState({ selectedAttribute: a.attribute, selectedIndex: i })
-                        }}>
-                            {a.attribute_label || a.attribute}
-                            ({a.attribute_type})
-                    </li>)}
-                </ul>
+                {this.renderLayerAttributes(attrs, isGeom, filter)}
 
                 {this.renderTip()}
             </div>
