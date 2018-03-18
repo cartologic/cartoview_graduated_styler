@@ -12,22 +12,52 @@ export default class AttributeSelector extends Component {
     componentDidMount() {
         const { layerName } = this.props.config;
         WMSClient.getLayerAttributes( layerName ).then( ( attrs ) => {
-            this.setState( { attrs } );
+            if(attrs && attrs.length > 0){
+                this.setState( { attrs } );
+            }
+            else{
+                this.setState({noAttributes: true, loading: false})
+            }
         } );
     }
     onComplete() {
         this.props.onComplete( this.state.selectedAttribute, this.state.selectedIndex )
     }
+    renderNoAttributesErrorMessage(){
+        return(
+            <div className="panel panel-danger">
+                <div className="panel-heading">Error:</div>
+                <div className="panel-body">
+                    The layer has no attributes !
+                </div>
+            </div>
+        )
+    }
+    renderTip(){
+        return (
+            <div className="row">
+                <div className="col-md-12">
+                    <Tip text={this.props.tip} />
+                </div>
+            </div>
+        )
+    }
     render() {
         const { attrs } = this.state;
-        if ( attrs.length == 0 ) {
-            return <Loader />
-        }
-        const { onComplete, filter, tip } = this.props;
+        const { onComplete, filter } = this.props;
         const isGeom = ( a ) => {
             return a.attribute_type.toLowerCase().indexOf( "gml:" ) ==
                 0;
         }
+
+        if (this.state.noAttributes) 
+            return (
+                <div>
+                    {/* {this.renderNoAttributesErrorMessage()} */}
+                    {this.renderTip()}
+                </div>
+            )
+
         return (
             <div>
                 <div className="row">
@@ -39,7 +69,7 @@ export default class AttributeSelector extends Component {
                         <PreviousButton clickAction={() => this.props.onPrevious()} />
                     </div>
                 </div>
-
+                {/* TODO: what if there is no attributes?! */}
                 <ul className="list-group">
                     {attrs.map((a, i) => isGeom(a) || !filter(a)
                         ? null
@@ -50,11 +80,8 @@ export default class AttributeSelector extends Component {
                             ({a.attribute_type})
                     </li>)}
                 </ul>
-                <div className="row">
-                    <div className="col-md-12">
-                        <Tip text={tip} />
-                    </div>
-                </div>
+
+                {this.renderTip()}
             </div>
         )
     }
