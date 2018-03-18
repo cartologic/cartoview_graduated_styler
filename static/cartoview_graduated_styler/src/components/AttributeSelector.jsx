@@ -9,16 +9,23 @@ export default class AttributeSelector extends Component {
         selectedIndex: this.props.index ? this.props.index : -1,
         selectedAttribute: this.props.attribute ? this.props.attribute : ''
     }
-    componentDidMount() {
-        const { layerName } = this.props.config;
+    getLayerAttributes(layerName){
         WMSClient.getLayerAttributes( layerName ).then( ( attrs ) => {
             if(attrs && attrs.length > 0){
-                this.setState( { attrs } );
+                this.setState( { loading: false, attrs } )
             }
             else{
-                this.setState({noAttributes: true, loading: false})
+                this.setState({loading: false, noAttributes: true,})
             }
-        } );
+        } )
+    }
+    componentDidMount() {
+        const { layerName } = this.props.config;
+        this.setState({
+            loading: true,
+        }, ()=>{
+            this.getLayerAttributes(layerName)
+        })
     }
     onComplete() {
         this.props.onComplete( this.state.selectedAttribute, this.state.selectedIndex )
@@ -63,6 +70,8 @@ export default class AttributeSelector extends Component {
             return a.attribute_type.toLowerCase().indexOf( "gml:" ) ==
                 0;
         }
+
+        if(this.state.loading) {return <Loader />}
 
         if (this.state.noAttributes) 
             return (
