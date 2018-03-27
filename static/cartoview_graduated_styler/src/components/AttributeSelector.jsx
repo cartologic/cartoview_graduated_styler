@@ -9,25 +9,78 @@ export default class AttributeSelector extends Component {
         selectedIndex: this.props.index ? this.props.index : -1,
         selectedAttribute: this.props.attribute ? this.props.attribute : ''
     }
+    getLayerAttributes(layerName){
+        WMSClient.getLayerAttributes( layerName ).then( ( attrs ) => {
+            if(attrs && attrs.length > 0){
+                this.setState( { loading: false, attrs } )
+            }
+            else{
+                this.setState({loading: false, noAttributes: true,})
+            }
+        } )
+    }
     componentDidMount() {
         const { layerName } = this.props.config;
-        WMSClient.getLayerAttributes( layerName ).then( ( attrs ) => {
-            this.setState( { attrs } );
-        } );
+        this.setState({
+            loading: true,
+        }, ()=>{
+            this.getLayerAttributes(layerName)
+        })
     }
     onComplete() {
         this.props.onComplete( this.state.selectedAttribute, this.state.selectedIndex )
     }
+    renderNoAttributesErrorMessage(){
+        return(
+            <div className="panel panel-danger">
+                <div className="panel-heading">Error:</div>
+                <div className="panel-body">
+                    The layer has no attributes !
+                </div>
+            </div>
+        )
+    }
+    renderTip(){
+        return (
+            <div className="row">
+                <div className="col-md-12">
+                    <Tip text={this.props.tip} />
+                </div>
+            </div>
+        )
+    }
+    renderLayerAttributes(attrs, isGeom, filter){
+        return (
+            <ul className="list-group">
+                {attrs.map((a, i) => isGeom(a) || !filter(a)
+                    ? null
+                    : <li className={classNames("list-group-item li-attribute", { "li-attribute-selected": this.state.selectedIndex == i })} onClick={() => {
+                        this.setState({ selectedAttribute: a.attribute, selectedIndex: i })
+                    }}>
+                        {a.attribute_label || a.attribute}
+                        ({a.attribute_type})
+                </li>)}
+            </ul>
+        )
+    }
     render() {
         const { attrs } = this.state;
-        if ( attrs.length == 0 ) {
-            return <Loader />
-        }
-        const { onComplete, filter, tip } = this.props;
+        const { onComplete, filter } = this.props;
         const isGeom = ( a ) => {
             return a.attribute_type.toLowerCase().indexOf( "gml:" ) ==
                 0;
         }
+
+        if(this.state.loading) {return <Loader />}
+
+        if (this.state.noAttributes) 
+            return (
+                <div>
+                    {/* {this.renderNoAttributesErrorMessage()} */}
+                    {this.renderTip()}
+                </div>
+            )
+
         return (
             <div>
                 <div className="row">
@@ -39,22 +92,9 @@ export default class AttributeSelector extends Component {
                         <PreviousButton clickAction={() => this.props.onPrevious()} />
                     </div>
                 </div>
+                {this.renderLayerAttributes(attrs, isGeom, filter)}
 
-                <ul className="list-group">
-                    {attrs.map((a, i) => isGeom(a) || !filter(a)
-                        ? null
-                        : <li className={classNames("list-group-item li-attribute", { "li-attribute-selected": this.state.selectedIndex == i })} onClick={() => {
-                            this.setState({ selectedAttribute: a.attribute, selectedIndex: i })
-                        }}>
-                            {a.attribute_label || a.attribute}
-                            ({a.attribute_type})
-                    </li>)}
-                </ul>
-                <div className="row">
-                    <div className="col-md-12">
-                        <Tip text={tip} />
-                    </div>
-                </div>
+                {this.renderTip()}
             </div>
         )
     }
