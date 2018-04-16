@@ -64,8 +64,7 @@ class StylesManager {
                         size, 7 ) ],
                     title: c.label,
                     filter: new OpenLayers.Filter.Logical( {
-                        type: OpenLayers.Filter
-                            .Logical.AND,
+                        type: c.min==c.max? OpenLayers.Filter.Logical.OR:OpenLayers.Filter.Logical.AND,
                         filters: [
               new OpenLayers.Filter.Comparison( {
                                 type: OpenLayers
