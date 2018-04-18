@@ -23,7 +23,17 @@ export default class PointSymbolizer extends Component {
                     <label>Point Radius</label>
                     <input className="form-control" type="number" value={config.pointRadius}
                         step={1} min={0} max={50} style={{ width: "80px" }}
-                        onChange={(e) => onChange({ pointRadius: parseFloat(e.target.value) })} />
+                        onChange = {
+                            (e) => {
+                                console.log(e.target.value.length)
+                                if (e.target.value.length > 4) {
+                                    e.target.value = config.pointRadius
+                                }
+                                onChange({
+                                    pointRadius: parseFloat(e.target.value)
+                                })
+                            }
+                    } />
                 </div>
                 <PolygonSymbolizer {...this.props} />
             </div>
