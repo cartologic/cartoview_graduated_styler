@@ -38,9 +38,11 @@ const appManagerRest="{% url 'app_manager_base_url' %}rest/app_manager/"
     {% if 'access_token' in request.session %}
         wfsURL : "{{ GEOSERVER_BASE_URL }}wfs?access_token={{request.session.access_token}}",
         wmsURL : "{{ GEOSERVER_BASE_URL }}wms?access_token={{request.session.access_token}}",
+        wpsURL : "{{ GEOSERVER_BASE_URL }}wps?access_token={{request.session.access_token}}",
         {% else %}
         wfsURL : "{{ GEOSERVER_BASE_URL }}wfs",
         wmsURL : "{{ GEOSERVER_BASE_URL }}wms",
+        wpsURL : "{{ GEOSERVER_BASE_URL }}wps",
     {% endif %}
     static: "{{ STATIC_URL }}",
     appStatic: "{{ STATIC_URL }}{{APP_NAME}}",
