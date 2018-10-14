@@ -20,10 +20,18 @@ export default class GeneralSymbolizer extends Component {
       </div>
         )
     }
+    componentWillReceiveProps(nextProps){
+        if(this.props != nextProps){
+            this.setState({
+                loadingRules: nextProps.loadingRules
+            })
+        }
+    }
+
     render() {
         const { config, styleObj, type, onComplete, onChange } = this.props;
         const { numOfClasses, layerType } = config;
-        if ( !numOfClasses ) {
+        if ( this.state.loadingRules ) {
             return <Loader />
         }
         var Symbolizer = layerType == "Point" ? PointSymbolizer :

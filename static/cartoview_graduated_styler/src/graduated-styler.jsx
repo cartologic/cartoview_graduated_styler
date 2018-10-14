@@ -235,16 +235,20 @@ class Styler extends Component {
                 props: {
                     type: config.method,
                     onComplete: () => {
-                        StylesManager.createGraduatedRules(
-                            styleObj, config ).then( (
-                            styleObj ) => {
-                            step++
-                            this.setState( {
-                                styleObj,
-                                step
+                        this.setState({loadingRules:true}, ()=>{
+                            StylesManager.createGraduatedRules(
+                                styleObj, config ).then( (
+                                styleObj ) => {
+                                step++
+                                this.setState( {
+                                    styleObj,
+                                    step,
+                                    loadingRules: false
+                                } )
                             } )
-                        } )
+                        })
                     },
+                    loadingRules: this.state.loadingRules,
                     onChange: ( newConfig ) => this.updateConfig(
                         newConfig, true ),
                     onPrevious: () => {
