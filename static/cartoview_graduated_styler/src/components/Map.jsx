@@ -27,10 +27,19 @@ export default class Map extends React.Component {
 
   componentDidMount(){
     this.map.setTarget(ReactDOM.findDOMNode(this.refs.map));
-    WMSClient.getLayer(this.props.config.layerName).then(({bbox_x0, bbox_y0, bbox_x1, bbox_y1, srid}) => {
-      const extent = [bbox_x0, bbox_y0, bbox_x1, bbox_y1].map(i=>parseFloat(i));
-      this.map.getView().fit(ol.proj.transformExtent(extent, srid, "EPSG:3857"));
-    })
+    WMSClient.getLayer(this.props.config.layerName).then(({ bbox_polygon }) => {
+      const bboxAsArray = bbox_polygon.slice(20).slice(0, -2).split(" ");
+      for (let i=0 ; i < bboxAsArray.length ; i++){
+        if (bboxAsArray[i].slice(-1) === ","){
+          bboxAsArray[i] = bboxAsArray[i].slice(0, -1);
+        }
+        bboxAsArray[i] = Number.parseFloat(bboxAsArray[i]);
+      }
+      const extent = [bboxAsArray[0], bboxAsArray[1], bboxAsArray[4], bboxAsArray[5]];
+      // Current srid is EPSG:3857, no need to reproject
+      this.map.getView().fit(extent);
+      this.map.getView().setZoom(this.map.getView().getZoom() + 1);
+    });
   }
 
 
